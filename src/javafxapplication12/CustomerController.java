@@ -35,10 +35,10 @@ import javafx.stage.Stage;
  */
 public class CustomerController implements Initializable {
 
-    @FXML private TableView<Book> tableView;
-    @FXML private TableColumn<Book, String> UsernameColumn;
-    @FXML private TableColumn<Book, String> PasswordColumn;
-    @FXML private TableColumn<Book, String> PointsColumn;
+    @FXML private TableView<Customer> tableView;
+    @FXML private TableColumn<Customer, String> UsernameColumn;
+    @FXML private TableColumn<Customer, String> PasswordColumn;
+    @FXML private TableColumn<Customer, String> PointsColumn;
     
     //These instance variables are used to create new Person objects
     @FXML private TextField UsernameTextField;
@@ -65,8 +65,8 @@ public class CustomerController implements Initializable {
      */
     public void changeUserNameCellEvent(CellEditEvent edittedCell)
     {
-        Book customerSelected =  tableView.getSelectionModel().getSelectedItem();
-        customerSelected.setUsername(edittedCell.getNewValue().toString());
+        Customer customerSelected =  tableView.getSelectionModel().getSelectedItem();
+        customerSelected.setPassword(edittedCell.getNewValue().toString());
     }
     
     /**
@@ -75,7 +75,7 @@ public class CustomerController implements Initializable {
      */
     public void changePasswordCellEvent(CellEditEvent edittedCell)
     {
-        Book customerSelected =  tableView.getSelectionModel().getSelectedItem();
+        Customer customerSelected =  tableView.getSelectionModel().getSelectedItem();
         customerSelected.setPassword(edittedCell.getNewValue().toString());
     }
     
@@ -85,7 +85,7 @@ public class CustomerController implements Initializable {
      */
     public void changePointsCellEvent(CellEditEvent edittedCell)
     {
-        Book customerSelected =  tableView.getSelectionModel().getSelectedItem();
+        Customer customerSelected =  tableView.getSelectionModel().getSelectedItem();
         customerSelected.setPoints(edittedCell.getNewValue().toString());
     }
     
@@ -110,9 +110,9 @@ public class CustomerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //set up the columns in the table
-        UsernameColumn.setCellValueFactory(new PropertyValueFactory<Book, String>("Username"));
-        PasswordColumn.setCellValueFactory(new PropertyValueFactory<Book, String>("Password"));
-        PointsColumn.setCellValueFactory(new PropertyValueFactory<Book, String>("Points"));
+        UsernameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("Username"));
+        PasswordColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("Password"));
+        PointsColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("Points"));
         
         //load dummy data
         tableView.setItems(getCustomer());
@@ -132,8 +132,8 @@ public class CustomerController implements Initializable {
      */
     public void AddButtonPushed()
     {
-        ObservableList<Book> newCustomer = tableView.getItems();
-        newCustomer.add(new Book(UsernameTextField.getText(),
+        ObservableList<Customer> newCustomer = tableView.getItems();
+        newCustomer.add(new Customer(UsernameTextField.getText(),
             PasswordTextField.getText(),
             PointsTextField.getText()
         ));
@@ -148,7 +148,7 @@ public class CustomerController implements Initializable {
        try {
            file_writer = new FileWriter("Customer.txt", true);
            BufferedWriter bw = new BufferedWriter(file_writer);
-           for(Book customers : newCustomer){
+           for(Customer customers : newCustomer){
                //add while loop to see for duplicates
                //if else to 
                bw.write(customers.toString());
@@ -199,12 +199,12 @@ public class CustomerController implements Initializable {
     
     
     
-    public ObservableList<Book>  getCustomer()
+    public ObservableList<Customer>  getCustomer()
     {
-        ObservableList<Book> owner = FXCollections.observableArrayList();
-        owner.add(new Book("Frank","Sinatra","90"));
-        owner.add(new Book("John","Smith","80"));
-        owner.add(new Book("Ali","Hamza","20"));
+        ObservableList<Customer> owner = FXCollections.observableArrayList();
+        owner.add(new Customer("Frank","Sinatra","90"));
+        owner.add(new Customer("John","Smith","80"));
+        owner.add(new Customer("Ali","Hamza","20"));
         
         return owner;
     }
