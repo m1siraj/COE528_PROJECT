@@ -5,9 +5,14 @@
  */
 package javafxapplication12;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -40,20 +45,36 @@ public class LoginController implements Initializable {
     public void LoginButtonPushed(ActionEvent event) throws IOException {
         
         
+        //Customer login
         
-        //add while loop to allow the customers to login 
+        //Arraylist to get all the lines of Customer.txt file and then split them to get username and password
+        //compare username and password with the user input username and password
+        
+        Scanner s = new Scanner(new File("Customer.txt"));
+        
+        while (s.hasNext())
+        {
+            String[] line = s.nextLine().split(",");
+            
+            if(usernameTextField.getText().equals(line[0]) && passwordPasswordField.getText().equals(line[1])) {
+                System.out.println("username: "+line[0]+" password: "+line[1]);
+                
+                Parent tableViewParent = FXMLLoader.load(getClass().getResource("Customer_CustomerView.fxml"));
+                Scene tableViewScene = new Scene(tableViewParent);
+        
+                //Stage info
+                Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+                window.setTitle("Bookstore App");
+                window.setScene(tableViewScene);
+                window.show();
+                break;
+            }
+        }
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        if(usernameTextField.getText().equals("admin") && passwordPasswordField.getText().equals("pass")) {
+        // admin login
+       
+        if(usernameTextField.getText().equals("admin") && passwordPasswordField.getText().equals("admin")) {
             
             Parent tableViewParent = FXMLLoader.load(getClass().getResource("interface.fxml"));
             Scene tableViewScene = new Scene(tableViewParent);
@@ -63,18 +84,9 @@ public class LoginController implements Initializable {
             window.setTitle("Bookstore App");
             window.setScene(tableViewScene);
             window.show();
-        }
-//        } else if (usernameTextField.getText().equals("test") && passwordPasswordField.getText().equals("test")) {
-//            
-//            Parent tableViewParent = FXMLLoader.load(getClass().getResource("interface.fxml"));
-//            Scene tableViewScene = new Scene(tableViewParent);
-//        
-//            //Stage info
-//            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-//            window.setTitle("Bookstore App");
-//            window.setScene(tableViewScene);
-//            window.show();
-//        } 
+        } 
+        
+        // display error username pasword not found
         
         else {
             invalidLoginLabel.setText("Login Failed!");
@@ -82,10 +94,6 @@ public class LoginController implements Initializable {
         
     }
         
-        
-    
-    
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

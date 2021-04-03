@@ -45,13 +45,27 @@ public class Customer {
         Points.set(points);
     }
 
-   // lfas;kfas
     @Override
     public String toString() {
         return ""+ getUsername()+" "+ getPassword()+" "+getPoints();
     }
     
+    public String saveString() {
+        return ""+ getUsername()+","+ getPassword()+","+getPoints();
+    }
+    
+    public Boolean checkNull() {
+        if ((this.getUsername()).isEmpty() || (this.getPassword()).isEmpty()){
+            // System.out.println("InCheck Null and true");
+            return true;
+        }
+        
+        // System.out.println("this.getUsername is "+ this.getUsername());
+        // System.out.println("this.getPassword is "+ this.getPassword());
+        // System.out.println("InCheck Null and false");
+        return false;
+    }
 }
-//This is my line
+
 
 

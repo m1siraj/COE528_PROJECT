@@ -7,10 +7,15 @@ package javafxapplication12;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -132,43 +137,44 @@ public class CustomerController implements Initializable {
      */
     public void AddButtonPushed()
     {
-        ObservableList<Customer> newCustomer = tableView.getItems();
-        newCustomer.add(new Customer(UsernameTextField.getText(),
-            PasswordTextField.getText(),
-            PointsTextField.getText()
-        ));
-        
-        UsernameTextField.setText("");
-        PasswordTextField.setText("");
-        PointsTextField.setText("");
-        
-        //Save Book information in a Book.txt file
-        
-        FileWriter file_writer;
-       try {
-           file_writer = new FileWriter("Customer.txt", true);
-           BufferedWriter bw = new BufferedWriter(file_writer);
-           for(Customer customers : newCustomer){
-               //add while loop to see for duplicates
-               //if else to 
-               bw.write(customers.toString());
-               bw.newLine();
-           }
-           bw.close();
-           
+        // check for null values
+        // check for duplicate username
+        // return eror for above checks
 
+        Customer newRegistration = new Customer(UsernameTextField.getText(), PasswordTextField.getText(), "0");
+        if(newRegistration.checkNull()) {// && !newRegistration.duplicate()) {
+           // display error 
+            // System.out.println("checkNull is true");
+           
+        } else {
+            //check for duplicate
+                //  return error} else{BookB
+            // System.out.println("checkNull is false");
+            ObservableList<Customer> newCustomer = tableView.getItems();
+            newCustomer.add(newRegistration);   // Add new user to the grid
+
+
+            
+
+            // add user to the txt file for permanent storage        
+            FileWriter file_writer;
+            try {
+                file_writer = new FileWriter("Customer.txt", true);
+                BufferedWriter bw = new BufferedWriter(file_writer);
+                bw.write(newRegistration.saveString());
+                bw.newLine();
+                bw.close();
             }catch (IOException E) {
                 System.out.print("Error is ");
             }
-   
+
+            // clear user registation fields
+            UsernameTextField.clear();
+            PasswordTextField.clear();
+            PointsTextField.clear();
+            
+        }
         
-        
-        //Get all the items from the table as a list, then add the new person to
-        //the list
-//        tableView.getItems().add(newCustomer);
-        UsernameTextField.clear();
-        PasswordTextField.clear();
-        PointsTextField.clear();
                 
         
         
@@ -182,31 +188,50 @@ public class CustomerController implements Initializable {
     public void deleteButtonPushed()
     {
         
-        tableView.getItems().removeAll(tableView.getSelectionModel().getSelectedItem());
+//        tableView.getItems().removeAll(tableView.getSelectionModel().getSelectedItem());
             
-//        ObservableList<Customer> selectedRows, allCustomer;
-//        allCustomer = tableView.getItems();
-//        
-//        //this gives us the rows that were selected
-//        selectedRows = tableView.getSelectionModel().getSelectedItems();
-//        
-//        //loop over the selected rows and remove the Person objects from the table
-//        for (Book customer: selectedRows)
-//        {
-//            allCustomer.remove(customer);
-//        }
+        ObservableList<Customer> selectedRows, allCustomer;
+        allCustomer = tableView.getItems();
+        
+        //this gives us the rows that were selected
+        selectedRows = tableView.getSelectionModel().getSelectedItems();
+        System.out.println("selectedRows is " + selectedRows);
+        selectedRows.forEach(allCustomer::remove);
+        
+
+        
+        
+        
+        System.out.println("allCustomer is " + allCustomer);
     }
     
     
     
     public ObservableList<Customer>  getCustomer()
     {
-        ObservableList<Customer> owner = FXCollections.observableArrayList();
-        owner.add(new Customer("Frank","Sinatra","90"));
-        owner.add(new Customer("John","Smith","80"));
-        owner.add(new Customer("Ali","Hamza","20"));
-        
-        return owner;
+        ObservableList<Customer> customer = FXCollections.observableArrayList();
+            
+        try {
+            
+            Scanner s = new Scanner(new File("Customer.txt"));
+            ArrayList<String> customerList = new ArrayList<String>();
+            while (s.hasNext())
+            {
+                customerList.add(s.nextLine());
+                //parse each line and create an instance of customer
+                String[] customerDetails;
+                customerDetails = (customerList.get(customerList.size() - 1)).split(",");
+                System.out.println("customerDetails is " + customerDetails[0] + customerDetails[1] + customerDetails[2]);
+                Customer temp = new Customer (customerDetails[0], customerDetails[1], customerDetails[2]);
+                customer.add(temp);
+                //add the instance to customer
+            }
+            System.out.println(customerList);
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return customer;
     }
 }
     

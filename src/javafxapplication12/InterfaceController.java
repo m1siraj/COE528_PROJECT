@@ -43,7 +43,7 @@ public class InterfaceController implements Initializable {
     //When this method is called, it will change the scene to a Customer view
     
     public void CustomerButtonPushed(ActionEvent event) throws IOException {
-        Parent tableViewParent = FXMLLoader.load(getClass().getResource("Customer.fxml"));
+        Parent tableViewParent = FXMLLoader.load(getClass().getResource("Books.fxml"));
         Scene tableViewScene = new Scene(tableViewParent);
         
         //Stage info
@@ -54,7 +54,7 @@ public class InterfaceController implements Initializable {
         
     }
     
-    //When this method is called, it will change the scene to a Customer view
+    //When this method is called, it will change the scene to a Book view
     
     public void BooksButtonPushed(ActionEvent event) throws IOException {
         Parent tableViewParent = FXMLLoader.load(getClass().getResource("Books.fxml"));
