@@ -57,6 +57,8 @@ public class LoginController implements Initializable {
             String[] line = s.nextLine().split(",");
             
             if(usernameTextField.getText().equals(line[0]) && passwordPasswordField.getText().equals(line[1])) {
+                
+                
                 System.out.println("username: "+line[0]+" password: "+line[1]);
                 
                 Parent tableViewParent = FXMLLoader.load(getClass().getResource("Customer_CustomerView.fxml"));
