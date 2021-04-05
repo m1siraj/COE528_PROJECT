@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package javafxapplication12;
-      
-import javafx.scene.control.CheckBox;
 
 public class CustomerCustomer extends Person1 {
    
