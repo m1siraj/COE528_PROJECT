@@ -8,6 +8,8 @@ package javafxapplication12;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 /**
@@ -27,26 +30,20 @@ import javafx.stage.Stage;
  */
 public class CustomerStartScreenfinalController implements Initializable {
     
-    @FXML private TableView<Book1> CustomertableView;
-    @FXML private TableColumn<Book1, String> BookNameColumn;
-    @FXML private TableColumn<Book1, String> BookPriceColumn;
-    @FXML private TableColumn<Book1, String> SelectionColumn;
+    @FXML private TableView<customerBooks> CustomertableView;
+    @FXML private TableColumn<customerBooks, String> BookNameColumn;
+    @FXML private TableColumn<customerBooks, String> BookPriceColumn;
+    @FXML private TableColumn<customerBooks, String> selectCol;
     @FXML private Label welcomingLabel;
-    @FXML private TextArea textarea;
     
-    private Customer1 theCustomer = null;
-    
+    public CustomerCustomer theCustomer;
     
     
-    public void currentCustomer(/*Customer1 theCustomer*/){
+    
+    public void currentCustomer(CustomerCustomer theCustomer){
         
-        //Testing label
-        String labeltesting = "Testing";
-        welcomingLabel.setText(labeltesting);
-        
-//        this.theCustomer = theCustomer;
-//        
-//        welcomingLabel.setText("Welcome " + theCustomer.getUsername() + ". You have: " + theCustomer.getPoints() + " points. Your status is: " + theCustomer.checkLevel());
+        this.theCustomer = theCustomer;       
+        welcomingLabel.setText("Welcome " + theCustomer.getUsername() + ". You have: " + theCustomer.getPoints() + " points. Your status is: " + theCustomer.checkLevel());
     }
     
 
@@ -94,15 +91,34 @@ public class CustomerStartScreenfinalController implements Initializable {
         window.show();   
     }
     
-    
-    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+        BookNameColumn.setCellValueFactory(new PropertyValueFactory<customerBooks, String>("Bookname"));
+        BookPriceColumn.setCellValueFactory(new PropertyValueFactory<customerBooks, String>("Bookprice"));
+        
+        //Adding a select coloumn with checkboxes
+        TableColumn selectCol = new TableColumn("Select");
+        CustomertableView.getColumns().addAll(selectCol);
+        selectCol.setCellValueFactory(new PropertyValueFactory<customerBooks, String>("Select"));
+        
+        //load dummy data
+        CustomertableView.setItems(getBooks());
+        
+    } 
+    
+    public ObservableList <customerBooks>  getBooks()
+    {
+        ObservableList<customerBooks> book = FXCollections.observableArrayList();
+        book.add(new customerBooks("Game of Thrones", 99.99));
+        book.add(new customerBooks("The Walking Dead", 50.00));
+        book.add(new customerBooks("Bones", 100.00));
+        
+        return book;
+    }   
       
     
 }
