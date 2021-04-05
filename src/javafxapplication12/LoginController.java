@@ -78,7 +78,7 @@ public class LoginController implements Initializable {
        
         if(usernameTextField.getText().equals("admin") && passwordPasswordField.getText().equals("admin")) {
             
-            Parent tableViewParent = FXMLLoader.load(getClass().getResource("interface.fxml"));
+            Parent tableViewParent = FXMLLoader.load(getClass().getResource("CustomerStartScreenfinal.fxml"));
             Scene tableViewScene = new Scene(tableViewParent);
         
             //Stage info
